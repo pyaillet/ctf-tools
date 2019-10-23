@@ -31,10 +31,5 @@ Contributions, issues and feature requests are welcome!<br />Feel free to check 
 
 Give a ⭐️ if this project helped you!
 
-## 📝 License
-
-Copyright © 2019 [pyaillet](https://github.com/pyaillet).<br />
-This project is [APACHE 2.0](https://raw.githubusercontent.com/pyaillet/ctf-tools/master/LICENSE) licensed.
-
 ***
 _This README was generated with ❤️ by [readme-md-generator](https://github.com/kefranabg/readme-md-generator)_
