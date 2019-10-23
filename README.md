@@ -1,8 +1,5 @@
 <h1 align="center">Welcome to ctf-tools 👋</h1>
 <p>
-  <a href="https://raw.githubusercontent.com/pyaillet/ctf-tools/master/LICENSE" target="_blank">
-    <img alt="License: APACHE 2.0" src="https://img.shields.io/badge/License-APACHE 2.0-yellow.svg" />
-  </a>
   <a href="https://twitter.com/pyaillet" target="_blank">
     <img alt="Twitter: pyaillet" src="https://img.shields.io/twitter/follow/pyaillet.svg?style=social" />
   </a>
