@@ -10,7 +10,11 @@
 ## Usage
 
 ```sh
-docker run -it --privileged -p 9090:9090 -v $(pwd)/:/home/r2/ docker.pkg.github.com/pyaillet/ctf-tools/ctf-tools:latest bash
+docker run -it \
+  --privileged \
+  -p 9090:9090 \
+  -v $(pwd)/:/home/r2/ \
+  docker.pkg.github.com/pyaillet/ctf-tools/ctf-tools:latest bash
 ```
 
 ## Author
