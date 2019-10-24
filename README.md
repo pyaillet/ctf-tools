@@ -5,7 +5,7 @@
   </a>
 </p>
 
-> Some tools used for CTF
+> Some tools used for CTF test
 
 ## Usage
 
