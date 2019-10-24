@@ -15,7 +15,7 @@ ENV R2_VERSION ${R2_VERSION}
 ENV R2_PIPE_PY_VERSION ${R2_PIPE_PY_VERSION}
 ENV R2_PIPE_NPM_VERSION ${R2_PIPE_NPM_VERSION}
 
-RUN echo -e "Building versions:\n\
+RUN bash echo -e "Building versions:\n\
   R2_VERSION=$R2_VERSION\n\
   R2_PIPE_PY_VERSION=${R2_PIPE_PY_VERSION}\n\
   R2_PIPE_NPM_VERSION=${R2_PIPE_NPM_VERSION}"
@@ -47,11 +47,13 @@ RUN DEBIAN_FRONTEND=noninteractive dpkg --add-architecture i386 && \
   curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
   apt-get install -y nodejs npm python-pip && \
   pip install r2pipe=="$R2_PIPE_PY_VERSION" && \
-  npm install --unsafe-perm -g "r2pipe@$R2_PIPE_NPM_VERSION" && \
-  cd /mnt && \
-  git clone -b "$R2_VERSION" -q --depth 1 https://github.com/radareorg/radare2.git && \
-  cd radare2 && \
-  ./sys/install.sh && \
+  npm install --unsafe-perm -g "r2pipe@$R2_PIPE_NPM_VERSION"
+
+WORKDIR /mnt
+RUN git clone -b "$R2_VERSION" -q --depth 1 https://github.com/radareorg/radare2.git
+
+WORKDIR /mnt/radare2
+RUN ./sys/install.sh && \
   make install && \
   apt-get install -y xz-utils && \
   apt-get autoremove --purge -y && \
