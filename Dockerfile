@@ -47,6 +47,7 @@ RUN DEBIAN_FRONTEND=noninteractive dpkg --add-architecture i386 && \
   libc6:i386=2.28-10 \
   libncurses5:i386=6.1+20181013-2+deb10u1 \
   libstdc++6:i386=8.3.0-6 \
+  patch=2.7.6-3+deb10u1 \
   gnupg2=2.2.12-1+deb10u1 \
   sudo=1.8.27-1+deb10u1 \ 
   vim=2:8.1.0875-5 && \
@@ -61,10 +62,12 @@ RUN DEBIAN_FRONTEND=noninteractive dpkg --add-architecture i386 && \
   apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /mnt
-RUN git clone -b "$R2_VERSION" -q --depth 1 https://github.com/radareorg/radare2.git
 
-WORKDIR /mnt/radare2
-RUN ./sys/install.sh && \
+# use cd because we are in a volume
+# hadolint ignore=DL3003
+RUN git clone -b "$R2_VERSION" -q --depth 1 https://github.com/radareorg/radare2.git && \
+  cd /mnt/radare2 && \
+  ./sys/install.sh && \
   make install && \
   apt-get install -y xz-utils=5.2.4-1 --no-install-recommends && \
   apt-get autoremove --purge -y && \
