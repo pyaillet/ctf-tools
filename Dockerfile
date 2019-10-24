@@ -34,6 +34,7 @@ RUN DEBIAN_FRONTEND=noninteractive dpkg --add-architecture i386 && \
   apt-get install -y --no-install-recommends \
   curl=7.64.0-4 \
   gcc=4:8.3.0-1 \
+  g++=4:8.3.0-1 \
   git=1:2.20.1-2 \
   bison=2:3.3.2.dfsg-1 \
   pkg-config=0.29-6 \
@@ -53,7 +54,8 @@ RUN DEBIAN_FRONTEND=noninteractive dpkg --add-architecture i386 && \
   apt-get install -y --no-install-recommends \
   nodejs=10.15.2~dfsg-2 \
   npm=5.8.0+ds6-4 \
-  python-pip=18.1-5 && \
+  python-pip=18.1-5 \
+  python-setuptools=40.8.0-1 && \
   pip install r2pipe=="$R2_PIPE_PY_VERSION" && \
   npm install --unsafe-perm -g "r2pipe@$R2_PIPE_NPM_VERSION" && \
   apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
