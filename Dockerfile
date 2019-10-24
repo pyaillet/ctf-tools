@@ -15,10 +15,10 @@ ENV R2_VERSION ${R2_VERSION}
 ENV R2_PIPE_PY_VERSION ${R2_PIPE_PY_VERSION}
 ENV R2_PIPE_NPM_VERSION ${R2_PIPE_NPM_VERSION}
 
-RUN bash echo -e "Building versions:\n\
-  R2_VERSION=$R2_VERSION\n\
-  R2_PIPE_PY_VERSION=${R2_PIPE_PY_VERSION}\n\
-  R2_PIPE_NPM_VERSION=${R2_PIPE_NPM_VERSION}"
+RUN echo "Building versions:" && \
+  echo "R2_VERSION=$R2_VERSION" && \
+  echo "R2_PIPE_PY_VERSION=${R2_PIPE_PY_VERSION}" && \
+  echo "R2_PIPE_NPM_VERSION=${R2_PIPE_NPM_VERSION}"
 
 # Build radare2 in a volume to minimize space used by build
 VOLUME ["/mnt"]
@@ -28,26 +28,31 @@ VOLUME ["/mnt"]
 # Build and install radare2 on master branch
 # Remove all build dependencies
 # Cleanup
+# hadolint ignore=DL4006
 RUN DEBIAN_FRONTEND=noninteractive dpkg --add-architecture i386 && \
   apt-get update && \
-  apt-get install -y \
-  curl \
-  gcc \
-  git \
-  bison \
-  pkg-config \
-  make \
-  glib-2.0 \
-  libc6:i386 \
-  libncurses5:i386 \
-  libstdc++6:i386 \
-  gnupg2 \
-  sudo \ 
-  vim && \
+  apt-get install -y --no-install-recommends \
+  curl=7.64.0-4 \
+  gcc=4:8.3.0-1 \
+  git=1:2.20.1-2 \
+  bison=2:3.3.2.dfsg-1 \
+  pkg-config=0.29-6 \
+  make=4.2.1-1.2 \
+  glib-2.0=1.58.3-2 \
+  libc6:i386=2.28-10 \
+  libncurses5:i386=6.1+20181013-2+deb10u1 \
+  libstdc++6:i386=8.3.0-6 \
+  gnupg2=2.2.12-1+deb10u1 \
+  sudo=1.8.27-1+deb10u1 \ 
+  vim=2:8.1.0875-5 && \
   curl -sL https://deb.nodesource.com/setup_8.x | bash - && \
-  apt-get install -y nodejs npm python-pip && \
+  apt-get install -y --no-install-recommends \
+  nodejs=10.15.2~dfsg-2 \
+  npm=5.8.0+ds6-4 \
+  python-pip=18.1-5 && \
   pip install r2pipe=="$R2_PIPE_PY_VERSION" && \
-  npm install --unsafe-perm -g "r2pipe@$R2_PIPE_NPM_VERSION"
+  npm install --unsafe-perm -g "r2pipe@$R2_PIPE_NPM_VERSION" && \
+  apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 WORKDIR /mnt
 RUN git clone -b "$R2_VERSION" -q --depth 1 https://github.com/radareorg/radare2.git
@@ -55,13 +60,14 @@ RUN git clone -b "$R2_VERSION" -q --depth 1 https://github.com/radareorg/radare2
 WORKDIR /mnt/radare2
 RUN ./sys/install.sh && \
   make install && \
-  apt-get install -y xz-utils && \
+  apt-get install -y xz-utils=5.2.4-1 --no-install-recommends && \
   apt-get autoremove --purge -y && \
   apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN pip install pwntools
+RUN pip install pwntools==3.12.2
 
 # Create non-root user
+# hadolint ignore=DL4006
 RUN useradd -m r2 && \
   adduser r2 sudo && \
   echo "r2:r2" | chpasswd

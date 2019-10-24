@@ -16,3 +16,4 @@ jobs:
       run: docker login docker.pkg.github.com/pyaillet/ctf-tools -u pyaillet -p ${{ secrets.GITHUB_TOKEN }}
     - name: Push to gh registry
       run: docker push docker.pkg.github.com/pyaillet/ctf-tools/ctf-tools:latest
+    needs: [lint]
