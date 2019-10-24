@@ -16,9 +16,9 @@ jobs:
     steps:
     - uses: actions/checkout@master
     - name: Build the Docker image
-      run: docker build . -t docker.pkg.github.com/pyaillet/ctf-tools/ctf-tools:${{ github.ref }}
+      run: docker build . -t docker.pkg.github.com/pyaillet/ctf-tools/ctf-tools:${GITHUB_REF:10}
     - name: Docker auth
       run: docker login docker.pkg.github.com/pyaillet/ctf-tools -u pyaillet -p ${{ secrets.GITHUB_TOKEN }}
     - name: Push to gh registry
-      run: docker push docker.pkg.github.com/pyaillet/ctf-tools/ctf-tools:${{ github.ref }}
+      run: docker push docker.pkg.github.com/pyaillet/ctf-tools/ctf-tools:${GITHUB_REF:10}
     needs: [lint]
