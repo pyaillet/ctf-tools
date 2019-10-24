@@ -1,0 +1,24 @@
+name: build
+on: 
+  push:
+    branches-ignore:
+      - '*'
+    tags:
+      - '*'
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - uses: docker://cdssnc/docker-lint
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@master
+    - name: Build the Docker image
+      run: docker build . -t docker.pkg.github.com/pyaillet/ctf-tools/ctf-tools:${{ github.ref }}
+    - name: Docker auth
+      run: docker login docker.pkg.github.com/pyaillet/ctf-tools -u pyaillet -p ${{ secrets.GITHUB_TOKEN }}
+    - name: Push to gh registry
+      run: docker push docker.pkg.github.com/pyaillet/ctf-tools/ctf-tools:${{ github.ref }}
+    needs: [lint]
