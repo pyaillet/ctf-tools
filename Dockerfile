@@ -56,7 +56,8 @@ RUN DEBIAN_FRONTEND=noninteractive dpkg --add-architecture i386 && \
   nodejs=10.15.2~dfsg-2 \
   npm=5.8.0+ds6-4 \
   python-pip=18.1-5 \
-  python-setuptools=40.8.0-1 && \
+  python-setuptools=40.8.0-1 \
+  python-dev=2.7.16-1 && \
   pip install r2pipe=="$R2_PIPE_PY_VERSION" && \
   npm install --unsafe-perm -g "r2pipe@$R2_PIPE_NPM_VERSION" && \
   apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
@@ -69,6 +70,7 @@ RUN git clone -b "$R2_VERSION" -q --depth 1 https://github.com/radareorg/radare2
   cd /mnt/radare2 && \
   ./sys/install.sh && \
   make install && \
+  apt-get update && \
   apt-get install -y xz-utils=5.2.4-1 --no-install-recommends && \
   apt-get autoremove --purge -y && \
   apt-get clean && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
